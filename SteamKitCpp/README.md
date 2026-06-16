@@ -1,9 +1,19 @@
 # SteamKitCpp
 
-SteamKitCpp is the native C++20 port of SteamKit. The first supported target is
-Windows x64, built as a static library with public headers.
+SteamKitCpp - это основа нативного C++20 SDK для SteamKit. SDK оформлен как
+Windows x64 static library с публичными заголовками, CMake presets, vcpkg
+manifest, тестами, samples и CMake package export.
 
-## Build
+Текущий код - foundation layer, а не полный parity-порт SteamKit2. Он покрывает
+публичную форму SDK, core value types, raw message containers, callback routing,
+handler accessors, package layout и entrypoint для генерации. Network logon, CM
+transport, protobuf services, CDN downloads, WebAPI wrappers и полноценный Game
+Coordinator пока намеренно оставлены как явные `NotImplemented` пути до переноса
+соответствующих parity tests.
+
+## Быстрый старт
+
+Конфигурация, сборка и тесты без обязательных внешних зависимостей:
 
 ```powershell
 cmake --preset windows-x64-release
@@ -11,9 +21,7 @@ cmake --build --preset windows-x64-release
 ctest --preset windows-x64-release
 ```
 
-The build is designed for CMake, Visual Studio 2022, and vcpkg manifest mode.
-For vcpkg-backed dependency resolution, set `VCPKG_ROOT` and use the `*-vcpkg`
-presets:
+Конфигурация, сборка и тесты через vcpkg:
 
 ```powershell
 $env:VCPKG_ROOT = 'C:\path\to\vcpkg'
@@ -22,40 +30,60 @@ cmake --build --preset windows-x64-release-vcpkg
 ctest --preset windows-x64-release-vcpkg
 ```
 
-Without Catch2 installed, the default presets fall back to a dependency-free
-smoke suite.
-
-Installed consumers can use the exported package target:
+Установка и подключение package target:
 
 ```cmake
 find_package(SteamKitCpp CONFIG REQUIRED)
 target_link_libraries(app PRIVATE SteamKitCpp::steamkit)
 ```
 
-## Current Layer
+Подключение aggregate public header:
 
-This foundation layer includes:
+```cpp
+#include <steamkit/steamkit.hpp>
+```
+
+## Публичный API
+
+Foundation layer сейчас предоставляет:
 
 - `steamkit::SteamID`, `steamkit::GameID`, `steamkit::JobID`
+- `steamkit::Result<T>` и `steamkit::AsyncJob<T>`
 - `steamkit::Client`, `steamkit::Configuration`, `steamkit::CallbackManager`
-- typed callback subscriptions and RAII unsubscription
+- typed callback subscriptions с RAII unsubscription
 - raw `ClientMsg<TBody>` and `ClientGCMsg<TBody>` containers
-- public handler accessors for `user`, `friends`, `apps`, `game_coordinator`,
-  `unified_messages`, and `cdn`
+- handler accessors: `user()`, `friends()`, `apps()`, `game_coordinator()`,
+  `unified_messages()` и `cdn()`
+- entrypoints для generated protocol namespaces через SteamLanguage codegen
 
-Network logon, CM transport, protobuf service wrappers, CDN downloads, and full
-Game Coordinator behavior are intentionally explicit `NotImplemented` failures
-until their parity tests are ported.
+## Документация
 
-## Code Generation
+- [Индекс документации](../docs/STEAMKITCPP.md)
+- [Сборка и тесты](../docs/STEAMKITCPP_BUILDING.md)
+- [Описание API](../docs/STEAMKITCPP_API.md)
+- [Архитектура](../docs/STEAMKITCPP_ARCHITECTURE.md)
+- [Генерация кода](../docs/STEAMKITCPP_CODEGEN.md)
+- [Тестирование](../docs/STEAMKITCPP_TESTING.md)
+- [Секреты и безопасность live-аккаунтов](../docs/STEAMKITCPP_SECURITY.md)
+- [Дорожная карта parity](../docs/STEAMKITCPP_PARITY_ROADMAP.md)
+- [Заметка по миграции](../docs/STEAMKITCPP_MIGRATION.md)
 
-`tools/generate_steamlang_cpp.py` is the native SteamLanguage entrypoint for
-generated enum headers. It accepts `--namespace` for public generated protocol
-namespaces. Full message class generation should extend this path rather than
-copying C# generated files.
+## Структура
 
-## Live Account Safety
+```text
+SteamKitCpp/
+  include/steamkit/      Публичные C++20 headers.
+  src/                   Реализация static library.
+  tests/                 Catch2, smoke, generator и safety tests.
+  samples/               Минимальные consumer examples.
+  tools/                 Нативные code generation tools.
+  cmake/                 Package config templates.
+  vcpkg.json             Manifest-mode dependencies.
+```
 
-Do not commit Steam credentials or `.maFile` files. The repo-level `.gitignore`
-blocks common live-test secret names, and `SteamKitCppSecretIgnoreTests` verifies
-that those patterns stay active without reading real account files.
+## Безопасность
+
+Не коммитьте Steam credentials, `.maFile` files, access tokens, cookies или
+live-account fixtures. Репозиторный `.gitignore` блокирует типовые secret file
+patterns, а `SteamKitCppSecretIgnoreTests` проверяет эти правила без чтения
+реальных файлов аккаунтов.

@@ -5,6 +5,12 @@
 
 SteamKit *(also known as SteamKit2)* is a .NET library designed to interoperate with Valve's [Steam network](https://store.steampowered.com/about). It aims to provide a simple, yet extensible, interface to perform various actions on the network.
 
+В репозитории также есть ранняя основа нативного C++20 SDK, **SteamKitCpp**,
+в [`SteamKitCpp/`](SteamKitCpp/README.md). SteamKitCpp собирается как Windows
+x64 static library с публичными заголовками и CMake package export. Это еще не
+полный parity-порт SteamKit2: управляемая библиотека SteamKit2 остается oracle
+для совместимости, пока нативные слои переносятся на C++.
+
 
 ## Getting Binaries
 
@@ -25,6 +31,15 @@ For more information on installing SteamKit, please refer to the [Installation G
 ## Documentation
 
 Documentation consists primarily of XML code documentation provided with the binaries, and our [wiki](https://github.com/SteamRE/SteamKit/wiki).
+
+Документация SteamKitCpp:
+
+- [README SteamKitCpp](SteamKitCpp/README.md)
+- [Индекс документации SteamKitCpp](docs/STEAMKITCPP.md)
+- [Сборка и тесты](docs/STEAMKITCPP_BUILDING.md)
+- [Описание API](docs/STEAMKITCPP_API.md)
+- [Дорожная карта parity](docs/STEAMKITCPP_PARITY_ROADMAP.md)
+- [Заметка по миграции](docs/STEAMKITCPP_MIGRATION.md)
 
 
 ## License
