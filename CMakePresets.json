@@ -1,0 +1,111 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "windows-x64-release",
+      "displayName": "Windows x64 Release",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/out/build/windows-x64-release",
+      "cacheVariables": {
+        "STEAMKITCPP_BUILD_TESTS": "ON",
+        "STEAMKITCPP_BUILD_SAMPLES": "ON"
+      }
+    },
+    {
+      "name": "windows-x64-release-vcpkg",
+      "displayName": "Windows x64 Release (vcpkg)",
+      "inherits": "windows-x64-release",
+      "binaryDir": "${sourceDir}/out/build/windows-x64-release-vcpkg",
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
+        "VCPKG_MANIFEST_DIR": "${sourceDir}/SteamKitCpp",
+        "VCPKG_INSTALLED_DIR": "${sourceDir}/out/vcpkg_installed",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+        "VCPKG_HOST_TRIPLET": "x64-windows"
+      }
+    },
+    {
+      "name": "windows-x64-debug",
+      "displayName": "Windows x64 Debug",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/out/build/windows-x64-debug",
+      "cacheVariables": {
+        "STEAMKITCPP_BUILD_TESTS": "ON",
+        "STEAMKITCPP_BUILD_SAMPLES": "ON"
+      }
+    },
+    {
+      "name": "windows-x64-debug-vcpkg",
+      "displayName": "Windows x64 Debug (vcpkg)",
+      "inherits": "windows-x64-debug",
+      "binaryDir": "${sourceDir}/out/build/windows-x64-debug-vcpkg",
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
+        "VCPKG_MANIFEST_DIR": "${sourceDir}/SteamKitCpp",
+        "VCPKG_INSTALLED_DIR": "${sourceDir}/out/vcpkg_installed",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+        "VCPKG_HOST_TRIPLET": "x64-windows"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows-x64-release",
+      "configurePreset": "windows-x64-release",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-x64-release-vcpkg",
+      "configurePreset": "windows-x64-release-vcpkg",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-x64-debug",
+      "configurePreset": "windows-x64-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-x64-debug-vcpkg",
+      "configurePreset": "windows-x64-debug-vcpkg",
+      "configuration": "Debug"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "windows-x64-release",
+      "configurePreset": "windows-x64-release",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-x64-release-vcpkg",
+      "configurePreset": "windows-x64-release-vcpkg",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-x64-debug",
+      "configurePreset": "windows-x64-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-x64-debug-vcpkg",
+      "configurePreset": "windows-x64-debug-vcpkg",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

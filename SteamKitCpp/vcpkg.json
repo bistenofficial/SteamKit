@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "steamkitcpp",
+  "version-string": "0.1.0",
+  "description": "Native C++20 SteamKit SDK port, built as a Windows x64 static library.",
+  "builtin-baseline": "f3e10653cc27d62a37a3763cd84b38bca07c6075",
+  "dependencies": [
+    "boost-asio",
+    "boost-beast",
+    "catch2",
+    "liblzma",
+    "minizip-ng",
+    "openssl",
+    "protobuf",
+    "zlib",
+    "zstd"
+  ]
+}

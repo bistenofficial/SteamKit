@@ -118,5 +118,18 @@ UpgradeLog*.XML
 Thumbs.db
 .DS_Store
 
+# Local Steam account secrets and live-test credentials
+*.maFile
+*.mafile
+*.secret.json
+*.local.json
+*.env
+.secret-ignore-probe/
+secrets/
+
 # Vcpkg
 Resources/NetHook2/NetHook2/vcpkg_installed
+out/vcpkg_installed/
+
+# CMake
+out/
